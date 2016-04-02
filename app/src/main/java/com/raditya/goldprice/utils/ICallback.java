@@ -5,7 +5,8 @@ package com.raditya.goldprice.utils;
  */
 public interface ICallback<T> {
 
-    public void onSuccess(T result);
+    public void onSuccess(T t);
 
-    public void onError(Throwable throwable);
+    public void onFailure(Throwable throwable);
 }
+

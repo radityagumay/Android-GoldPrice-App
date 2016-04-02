@@ -1,23 +1,28 @@
 package com.raditya.goldprice.network;
 
-import com.raditya.goldprice.utils.ICallback;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import java.io.InputStreamReader;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Type;
+
+import okhttp3.ResponseBody;
+import retrofit2.Converter;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by radityagumay on 3/29/2016.
  */
-public class RestHelper {
+public class RestHelper<T> {
 
     private static RestHelper sInstance;
     private static final Object LOCK = new Object();
 
     private RestService service;
-    private Call call;
 
     public static RestHelper getInstance() {
         synchronized (LOCK) {
@@ -28,7 +33,7 @@ public class RestHelper {
         return sInstance;
     }
 
-    private RestHelper() {
+    public RestHelper() {
         Retrofit retrofit = buildRetrofit();
         service = retrofit.create(RestService.class);
     }
@@ -36,37 +41,18 @@ public class RestHelper {
     private Retrofit buildRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(RestConstant.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(buildGson()))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }
 
-    public void cancel() {
-        if (call != null) {
-            this.call.cancel();
-        }
+    private Gson buildGson() {
+        return new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .create();
     }
 
-    /**
-     * Do Async
-     *
-     * @param username
-     * @param password
-     * @param callback
-     */
-    public void login(String username,
-                      String password,
-                      final ICallback<Boolean> callback) {
-        call = this.service.login();
-        call.enqueue(new Callback() {
-            @Override
-            public void onResponse(Response response, Retrofit retrofit) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+    public RestService getService() {
+        return this.service;
     }
 }

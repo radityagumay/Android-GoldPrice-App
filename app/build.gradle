@@ -51,7 +51,7 @@ android {
 }
 
 ext {
-    RETROFIT_VERSION = '2.0.0'
+    RETROFIT_VERSION = '2.0.0-beta2'
     RX_VERSION = '1.1.0'
     OKHTTP_VERSION = '2.7.5'
     CONVERTER_GSON_VERSION = '2.0.0-beta2'
@@ -60,6 +60,7 @@ ext {
     BUTTER_KNIFE_VERSION = '7.0.1'
 }
 
+//https://guides.codepath.com/android/Consuming-APIs-with-Retrofit
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -67,15 +68,40 @@ dependencies {
     compile "com.android.support:design:$LIBRARY_VERSION"
 
     // RX ANDROID
+    compile 'io.reactivex:rxjava:1.1.2'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
+/*
     compile "io.reactivex:rxandroid:$RX_VERSION"
     compile "io.reactivex:rxjava:$RX_VERSION"
+*/
 
     // NETWORK
-    compile "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.retrofit2:retrofit:2.0.1'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.1'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+
+/*
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.google.code.gson:gson:1.7.2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+*/
+/*
+    compile "com.squareup.retrofit:retrofit:$RETROFIT_VERSION"
     compile "com.squareup.okhttp:okhttp:$OKHTTP_VERSION"
+    compile "com.squareup.okhttp:okhttp-urlconnection:$OKHTTP_VERSION"
+    compile 'com.squareup.okio:okio:1.6.0'
     compile "com.google.code.gson:gson:$GSON_VERSION"
     compile "com.squareup.retrofit:converter-gson:$CONVERTER_GSON_VERSION"
+*/
 
     // BUTTER KNIFE
     compile "com.jakewharton:butterknife:$BUTTER_KNIFE_VERSION"
+
+    // TIMBER
+    compile 'com.jakewharton.timber:timber:3.1.0'
+
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 }

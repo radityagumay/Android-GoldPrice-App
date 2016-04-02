@@ -2,25 +2,24 @@ package com.raditya.goldprice.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.raditya.goldprice.R;
 import com.raditya.goldprice.base.BaseActivity;
 import com.raditya.goldprice.ui.adapter.SectionsPagerAdapter;
+import com.raditya.goldprice.ui.fragment.GoldFragment;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements
+        ViewPager.OnPageChangeListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -34,24 +33,22 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.container)
     ViewPager mViewPager;
-    @Bind(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
     @Bind(R.id.tabs)
     TabLayout tabLayout;
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initInjection();
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
         initView();
     }
 
     @Override
     public void onDestroy() {
-        unbindInjection();
         super.onDestroy();
     }
 
@@ -60,6 +57,10 @@ public class MainActivity extends BaseActivity {
         return this;
     }
 
+    @Override
+    public int getContentView() {
+        return R.layout.activity_main;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,22 +85,30 @@ public class MainActivity extends BaseActivity {
 
     private void initView() {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(this);
+
         tabLayout.setupWithViewPager(mViewPager);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
-    private void initInjection() {
-        ButterKnife.bind(this);
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
     }
 
-    private void unbindInjection() {
-        ButterKnife.unbind(this);
+    @Override
+    public void onPageSelected(int position) {
+        Fragment fragment = (Fragment) mSectionsPagerAdapter
+                .instantiateItem(mViewPager, position);
+        if (fragment instanceof GoldFragment) {
+            ((GoldFragment) fragment).onCallService();
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

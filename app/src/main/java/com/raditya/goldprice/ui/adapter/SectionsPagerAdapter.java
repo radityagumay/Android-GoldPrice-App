@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.raditya.goldprice.ui.fragment.GoldFragment;
 import com.raditya.goldprice.ui.fragment.PlaceholderFragment;
 
 /**
@@ -22,7 +23,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return PlaceholderFragment.newInstance(position + 1);
+        switch (position) {
+            case 0:
+                return GoldFragment.newInstance(position + 1);
+            default:
+                return PlaceholderFragment.newInstance(position + 1);
+        }
     }
 
     @Override

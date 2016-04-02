@@ -2,7 +2,6 @@ package com.raditya.goldprice.base;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
@@ -15,12 +14,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(getContentView());
     }
 
     @Override
-    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+    protected void onPostCreate(Bundle savedInstanceState) {
         ButterKnife.bind(getActivityLayout());
-        super.onPostCreate(savedInstanceState, persistentState);
+        super.onPostCreate(savedInstanceState);
     }
 
     @Override
@@ -30,4 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public abstract Activity getActivityLayout();
+
+    public abstract int getContentView();
 }

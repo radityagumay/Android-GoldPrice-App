@@ -5,5 +5,7 @@ package com.raditya.goldprice.network;
  */
 public class RestConstant {
 
-    public static final String BASE_URL = "http://billionairestrategy.net";
+    public static final String BASE_URL = "https://www.quandl.com/api/v1/datasets/";
+
+    public static final String GOLD = "/yahoo/gold.json";
 }
